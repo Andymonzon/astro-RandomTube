@@ -1,0 +1,23 @@
+<div class="w-full py-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-5 gap-y-8 px-5">
+  <!-- card video -->
+  {
+    [...Array(10)].map(() => (
+    <div class="w-full h-auto rounded-lg flex flex-col gap-5">
+    <img
+      src="https://picsum.photos/200"
+      alt="video"
+      class="w-full h-52 object-cover rounded-lg"
+    />
+    <div class="flex gap-2 items-center">
+      <!-- foto de un usuario -->
+      <img
+        src="https://picsum.photos/200"
+        alt="user"
+        class="rounded-full w-9 h-9"
+      />
+      <p>Titulo del video</p>
+    </div>
+  </div>
+    ))
+  }
+</div>
