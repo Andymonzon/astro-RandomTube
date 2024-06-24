@@ -21,7 +21,7 @@ const gifts = await getGifs()
         alt="user"
         class="rounded-full w-9 h-9"
       />
-      <p>Titulo del video</p>
+      <p>{gift.title.split('GIF')[0] || 'No title'}</p>
     </div>
   </div>
     ))
