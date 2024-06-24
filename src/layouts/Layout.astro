@@ -20,7 +20,9 @@ const { title } = Astro.props;
     <title>{title}</title>
   </head>
   <body class="bg-[#0f0f0f] text-white min-h-screen flex flex-col">
-    <header class="flex items-center justify-between px-5 py-3">
+    <header
+      class="flex items-center justify-between px-5 py-3 sticky top-0 bg-gradient-to-b from-[#0f0f0f] to-transparent backdrop-blur-sm"
+    >
       <h1 class="text-3xl flex-grow basis-0">{title}</h1>
       <input
         type="text"
