@@ -2,8 +2,23 @@ import type { APIGifts } from "../models/gifts.model";
 
 const API_KEY = import.meta.env.API_KEY;
 
-export const getGifs = async (limit = 25, keyword = "memes") => {
-  const url = `https://api.giphy.com/v1/gifs/search?api_key=${API_KEY}&q=${keyword}&limit=${limit}`;
+export enum TypeAPI {
+  SEARCH = "search",
+  TRENDING = "trending",
+}
+
+interface Props {
+  limit?: number;
+  keyword?: string;
+  type: TypeAPI;
+}
+
+export const getGifs = async ({
+  limit = 25,
+  keyword = "memes",
+  type,
+}: Props) => {
+  const url = `https://api.giphy.com/v1/gifs/${type}?api_key=${API_KEY}&q=${keyword}&limit=${limit}`;
   try {
     const response = await fetch(url);
     const { data }: APIGifts = await response.json();

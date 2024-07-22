@@ -1,6 +1,14 @@
 ---
-import {getGifs} from '../services/getGifs'
-const gifts = await getGifs()
+import { Image } from 'astro:assets'
+import {TypeAPI, getGifs} from '../services/getGifs'
+
+interface Props {
+  type: TypeAPI
+}
+
+const {type} = Astro.props
+
+const gifts = await getGifs({type})
 ---
 
 <div class="w-full py-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-5 gap-y-8 px-5 pl-[100px]">
@@ -9,16 +17,20 @@ const gifts = await getGifs()
     gifts &&
     gifts.map((gift) => (
     <div class="w-full h-auto rounded-lg flex flex-col gap-5">
-    <img
+    <Image
       src={gift.url}
+      width={480}
+      height={270}
       alt="video"
       class="w-full h-52 object-fill rounded-lg"
     />
     <div class="flex gap-2 items-center">
       <!-- foto de un usuario -->
-      <img
+      <Image
         src="https://picsum.photos/200"
         alt="user"
+        width={50}
+        height={50}
         class="rounded-full w-9 h-9"
       />
       <p>{gift.title.split('GIF')[0] || 'No title'}</p>
