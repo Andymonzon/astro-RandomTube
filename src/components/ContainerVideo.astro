@@ -8,17 +8,17 @@ interface Props {
 
 const {type} = Astro.props
 
-const gifts = await getGifs({type})
+const gifs = await getGifs({type})
 ---
 
 <div class="w-full py-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-5 gap-y-8 px-5 pl-[100px]">
   <!-- card video -->
   {
-    gifts &&
-    gifts.map((gift) => (
-    <div class="w-full h-auto rounded-lg flex flex-col gap-5">
+    gifs &&
+    gifs.map((gif) => (
+    <a href={`/gif/${gif.id}`} class="w-full h-auto rounded-lg flex flex-col gap-5">
     <Image
-      src={gift.url}
+      src={gif.url}
       width={480}
       height={270}
       alt="video"
@@ -31,11 +31,11 @@ const gifts = await getGifs({type})
         alt="user"
         width={50}
         height={50}
-        class="rounded-full w-9 h-9"
+        class="rounded-full w-10 h-10"
       />
-      <p>{gift.title.split('GIF')[0] || 'No title'}</p>
+      <p>{gif.title.split('GIF')[0] || 'No title'}</p>
     </div>
-  </div>
+  </a>
     ))
   }
 </div>
