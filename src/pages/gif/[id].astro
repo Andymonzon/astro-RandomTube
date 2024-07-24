@@ -44,14 +44,78 @@ const gif = await getGifById(id);
       }
     </div>
     <div class="grow p-2 border border-[#272727] rounded-md flex flex-col">
-      <div class="grow"></div>
-      <div class="flex">
+      <div class="grow">
+        <div class="container-comments">
+          <div class="flex items-center comments">
+            <!-- card de comentarios -->
+          </div>
+        </div>
+      </div>
+      <form class="flex" id="form-chat">
         <input
           type="text"
-          class="w-full p-2 outline-none bg-[#272727] rounded"
+          name="comment"
+          placeholder="Write a comment..."
+          class="w-full p-2 outline-none bg-[#272727] rounded-l"
         />
-        <button>Send</button>
-      </div>
+        <button class="bg-[#272727] rounded-r">Send</button>
+      </form>
     </div>
   </div>
 </Layout>
+
+<script>
+  interface TypeComment {
+    username: string;
+    comment: string;
+    avatar: string;
+  }
+
+  const comments: TypeComment[] = [];
+
+  const formChat = document.querySelector("#form-chat");
+
+  if (formChat) {
+    formChat.addEventListener("submit", (e: Event) => {
+      e.preventDefault();
+      const { comment } = Object.fromEntries(
+        new window.FormData(e.target as HTMLFormElement)
+      );
+
+      comments.push({
+        username: "Yo",
+        avatar: "https://picsum.photos/200",
+        comment: comment as string,
+      });
+
+      (formChat as HTMLFormElement).reset();
+
+      const commentsContainer = document.querySelector(".container-comments");
+      if (commentsContainer) {
+        const commentsHTML = comments
+          .map(({ username, comment, avatar }) => {
+            return `
+               <div class="flex gap-2 items-start">
+                  <Image
+                    src=${avatar}
+                    alt="user"
+                    width={20}
+                    height={50}
+                    class="rounded-full w-7 h-7"
+                  />
+                  <div>
+                    <p class="text-xs">${username}</p>
+                    <div>
+                      <p>${comment}</p>
+                    </div>
+                  </div>
+              </div>
+            `;
+          })
+          .join("");
+
+        commentsContainer.innerHTML = commentsHTML;
+      }
+    });
+  }
+</script>
