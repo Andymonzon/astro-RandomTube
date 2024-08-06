@@ -12,6 +12,15 @@ if (!id) {
 const gif = await getGifById(id);
 ---
 
+<style>
+  .whitespace-normal {
+    white-space: normal;
+  }
+  .break-words {
+    word-break: break-word;
+  }
+</style>
+
 <Layout title="Gif">
   <div class="w-full py-10 px-5 pl-[100px] flex gap-5">
     <div class="flex flex-col gap-6">
@@ -43,12 +52,11 @@ const gif = await getGifById(id);
         )
       }
     </div>
-    <div class="grow p-2 border border-[#272727] rounded-md flex flex-col">
+    <div class="w-1/3 p-2 border border-[#272727] rounded-md flex flex-col">
       <div class="grow">
-        <div class="container-comments">
-          <div class="flex items-center comments">
-            <!-- card de comentarios -->
-          </div>
+        <div
+          class="container-comments flex flex-col gap-3 overflow-y-auto overflow-x-hidden h-full max-h-[640px] whitespace-normal break-words"
+        >
         </div>
       </div>
       <form class="flex" id="form-chat">
@@ -65,6 +73,65 @@ const gif = await getGifById(id);
 </Layout>
 
 <script>
+  const commentRepeated: object[] = [];
+
+  const defaultComments = [
+    {
+      username: "Pepito",
+      avatar: `https://picsum.photos/id/${Math.round(Math.random() * 1000)}/200/300`,
+      comment: "hola",
+    },
+    {
+      username: "Juan",
+      avatar: `https://picsum.photos/id/${Math.round(Math.random() * 1000)}/200/300`,
+      comment: "muy buen video",
+    },
+    {
+      username: "Marcos",
+      avatar: `https://picsum.photos/id/${Math.round(Math.random() * 1000)}/200/300`,
+      comment: "epico",
+    },
+    {
+      username: "Pepito",
+      avatar: `https://picsum.photos/id/${Math.round(Math.random() * 1000)}/200/300`,
+      comment: "lol",
+    },
+  ];
+
+  const getCommentsRandom = () => {
+    const randomIndex = Math.floor(Math.random() * defaultComments.length);
+    const comment = defaultComments[randomIndex];
+
+    if (!commentRepeated.includes(comment)) {
+      commentRepeated.push(comment);
+
+      const commentsContainer = document.querySelector(".container-comments");
+      if (commentsContainer) {
+        const commentHTML = `
+        <div class="flex gap-2 items-start">
+          <img
+            src="${comment.avatar}"
+            alt="user"
+            width="20"
+            height="50"
+            class="rounded-full w-7 h-7"
+          />
+          <div class="whitespace-normal break-words">
+            <p class="text-xs">${comment.username}</p>
+            <div>
+              <p>${comment.comment}</p>
+            </div>
+          </div>
+        </div>
+      `;
+
+        commentsContainer.innerHTML += commentHTML;
+      }
+    }
+  };
+
+  setInterval(getCommentsRandom, 3500);
+
   interface TypeComment {
     username: string;
     comment: string;
@@ -92,21 +159,24 @@ const gif = await getGifById(id);
 
       const commentsContainer = document.querySelector(".container-comments");
       if (commentsContainer) {
-        const commentsHTML = comments
+        const newCommentHTML = comments
+          .slice(-1)
           .map(({ username, comment, avatar }) => {
             return `
                <div class="flex gap-2 items-start">
-                  <Image
-                    src=${avatar}
+                  <img
+                    src="${avatar}"
                     alt="user"
-                    width={20}
-                    height={50}
+                    width="20"
+                    height="50"
                     class="rounded-full w-7 h-7"
                   />
-                  <div>
+                  <div class="whitespace-normal break-words">
                     <p class="text-xs">${username}</p>
                     <div>
-                      <p>${comment}</p>
+                      <p>
+                        ${comment}
+                      </p>
                     </div>
                   </div>
               </div>
@@ -114,7 +184,7 @@ const gif = await getGifById(id);
           })
           .join("");
 
-        commentsContainer.innerHTML = commentsHTML;
+        commentsContainer.innerHTML += newCommentHTML;
       }
     });
   }
